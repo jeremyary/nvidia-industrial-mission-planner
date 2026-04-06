@@ -8,10 +8,10 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     """Service configuration loaded from environment variables."""
 
-    cosmos_endpoint: str = "http://cosmos-reason2:8080/v1"
-    cosmos_model: str = "nvidia/Cosmos-Reason2-8B"
-    nemotron_endpoint: str = "http://nemotron:8080/v1"
-    nemotron_model: str = "nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16"
+    cosmos_endpoint: str = "http://cosmos-reason2-metrics:8080/v1"
+    cosmos_model: str = "cosmos-reason2"
+    nemotron_endpoint: str = "http://nemotron-metrics:8080/v1"
+    nemotron_model: str = "nemotron"
     log_level: str = "info"
     request_timeout: float = 30.0
 

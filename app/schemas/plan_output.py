@@ -15,11 +15,12 @@ PLAN_OUTPUT_SCHEMA = {
             "type": "array",
             "items": {
                 "type": "object",
-                "required": ["action_id", "x", "y", "yaw", "behavior", "description"],
+                "required": ["action_id", "x", "y", "z", "yaw", "behavior", "description"],
                 "properties": {
                     "action_id": {"type": "string"},
                     "x": {"type": "number"},
                     "y": {"type": "number"},
+                    "z": {"type": "number"},
                     "yaw": {"type": "number"},
                     "behavior": {
                         "type": "string",

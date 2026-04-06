@@ -21,6 +21,7 @@ class Action(BaseModel):
     action_id: str = Field(..., description="Human-readable waypoint identifier")
     x: float = Field(..., description="X position in meters (world frame)")
     y: float = Field(..., description="Y position in meters (world frame)")
+    z: float = Field(0.0, description="Z position in meters (world frame)")
     yaw: float = Field(..., description="Yaw orientation in radians")
     behavior: Literal["walk", "climb", "descend", "stand"] = Field(
         ...,

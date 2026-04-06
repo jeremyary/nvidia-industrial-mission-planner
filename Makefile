@@ -48,18 +48,19 @@ preflight:
 
 deploy-models: preflight
 	@oc get project $(NAMESPACE) >/dev/null 2>&1 || oc new-project $(NAMESPACE)
-	@if ! oc get secret ngc-secret -n $(NAMESPACE) >/dev/null 2>&1; then \
-		if [ -f .env ]; then \
-			NGC_API_KEY=$$(grep '^NGC_API_KEY=' .env | cut -d'=' -f2-); \
-			if [ -n "$$NGC_API_KEY" ]; then \
-				oc create secret generic ngc-secret -n $(NAMESPACE) --from-literal=NGC_API_KEY=$$NGC_API_KEY; \
-			else \
-				echo "NGC_API_KEY not found in .env"; exit 1; \
-			fi; \
+	@if [ ! -f .env ]; then echo ".env file not found"; exit 1; fi
+	@if ! oc get secret hf-token -n $(NAMESPACE) >/dev/null 2>&1; then \
+		HF_TOKEN=$$(grep '^HF_TOKEN=' .env | cut -d'=' -f2-); \
+		if [ -n "$$HF_TOKEN" ]; then \
+			oc create secret generic hf-token -n $(NAMESPACE) --from-literal=HF_TOKEN=$$HF_TOKEN; \
 		else \
-			echo ".env file not found — create ngc-secret manually"; exit 1; \
+			echo "HF_TOKEN not found in .env"; exit 1; \
 		fi; \
 	fi
+	@if ! oc get sa model-sa -n $(NAMESPACE) >/dev/null 2>&1; then \
+		oc create sa model-sa -n $(NAMESPACE); \
+	fi
+	@oc secrets link model-sa hf-token -n $(NAMESPACE) 2>/dev/null || true
 	oc apply -f deploy/models/cosmos-reason2.yaml -n $(NAMESPACE)
 	oc apply -f deploy/models/nemotron.yaml -n $(NAMESPACE)
 

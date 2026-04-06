@@ -92,14 +92,14 @@ echo "Model Serving:"
 check "InferenceService CRD exists" oc get crd inferenceservices.serving.kserve.io
 check "ServingRuntime CRD exists" oc get crd servingruntimes.serving.kserve.io
 
-# NGC Secret
+# HuggingFace Access
 echo ""
-echo "NGC Access:"
-if oc get secret ngc-secret -n "$NAMESPACE" >/dev/null 2>&1; then
-    echo -e "  ${GREEN}✓${NC} NGC secret 'ngc-secret' found in namespace"
+echo "HuggingFace Access:"
+if oc get secret hf-token -n "$NAMESPACE" >/dev/null 2>&1; then
+    echo -e "  ${GREEN}✓${NC} HuggingFace token found in namespace"
     PASS=$((PASS + 1))
 else
-    echo -e "  ${YELLOW}!${NC} NGC secret 'ngc-secret' not found — will be created from .env during deploy"
+    echo -e "  ${YELLOW}!${NC} HuggingFace token not found — will be created from .env during deploy"
     PASS=$((PASS + 1))
 fi
 

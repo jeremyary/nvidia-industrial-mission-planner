@@ -10,24 +10,14 @@ Cloud mission planning service for the Unitree G1 humanoid robot. Orchestrates N
 The robot client calls `POST /v1/plan` at low frequency (0.25–1 Hz) with its current pose and optionally one or more camera frames. The service chains two models and returns an ordered list of waypoints the robot can execute.
 
 ```mermaid
-sequenceDiagram
-    participant Robot as G1 Robot Client
-    participant API as Mission Planner (FastAPI)
-    participant VLM as Cosmos-Reason2 (VLM)
-    participant LLM as Nemotron (LLM)
-
-    Robot->>API: POST /v1/plan<br/>(pose + camera frames + task)
-
-    alt Camera frames provided
-        API->>VLM: Images + scene prompt
-        VLM-->>API: Scene description (text)
-    end
-
-    API->>LLM: Task + pose + scene description
-    Note right of LLM: Guided decoding<br/>enforces JSON schema
-    LLM-->>API: Structured action plan (JSON)
-
-    API-->>Robot: PlanResponse (waypoints + metadata)
+flowchart TD
+    Robot([G1 Robot]) -->|POST /v1/plan| API[Mission Planner]
+    API --> Check{Camera frames?}
+    Check -->|yes| VLM[Cosmos-Reason2 VLM]
+    Check -->|no| LLM[Nemotron LLM]
+    VLM -->|scene description| LLM
+    LLM -->|guided JSON| API
+    API -->|PlanResponse| Robot
 ```
 
 ## Integration Contract
@@ -44,6 +34,7 @@ Each action in the response uses a flat structure matching the robot operator's 
       "action_id": "approach_stairs",
       "x": 5.0,
       "y": 0.0,
+      "z": 0.0,
       "yaw": 0.0,
       "behavior": "walk",
       "on_arrive": null,
@@ -64,7 +55,7 @@ Each action in the response uses a flat structure matching the robot operator's 
 |-------|------|--------|
 | `behavior` | string | `walk`, `climb`, `descend`, `stand` |
 | `on_arrive` | string or null | `handshake`, `wave`, `grasp`, `release` |
-| `x`, `y` | float | Meters in world frame |
+| `x`, `y`, `z` | float | Meters in world frame |
 | `yaw` | float | Radians |
 | `replan_conditions` | array | Forward-looking — not yet consumed by the robot client |
 
@@ -103,10 +94,10 @@ Environment variables (see `.env.example`):
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `COSMOS_ENDPOINT` | `http://cosmos-reason2:8000/v1` | Cosmos-Reason2 OpenAI-compatible endpoint |
-| `COSMOS_MODEL` | `nvidia/Cosmos-Reason2-8B` | Model name for scene understanding |
-| `NEMOTRON_ENDPOINT` | `http://nemotron-nano:8000/v1` | Nemotron OpenAI-compatible endpoint |
-| `NEMOTRON_MODEL` | `nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16` | Model name for planning |
+| `COSMOS_ENDPOINT` | `http://cosmos-reason2-metrics:8080/v1` | Cosmos-Reason2 OpenAI-compatible endpoint |
+| `COSMOS_MODEL` | `cosmos-reason2` | Served model name for scene understanding |
+| `NEMOTRON_ENDPOINT` | `http://nemotron-metrics:8080/v1` | Nemotron OpenAI-compatible endpoint |
+| `NEMOTRON_MODEL` | `nemotron` | Served model name for planning |
 | `LOG_LEVEL` | `info` | Logging level |
 | `REQUEST_TIMEOUT` | `30.0` | Model request timeout in seconds |
 
