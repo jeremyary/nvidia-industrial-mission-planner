@@ -13,8 +13,8 @@ The robot client calls `POST /v1/plan` at low frequency (0.25–1 Hz) with its c
 sequenceDiagram
     participant Robot as G1 Robot Client
     participant API as Mission Planner (FastAPI)
-    participant VLM as Cosmos-Reason2-8B
-    participant LLM as Nemotron 3 Nano 4B
+    participant VLM as Cosmos-Reason2 (VLM)
+    participant LLM as Nemotron (LLM)
 
     Robot->>API: POST /v1/plan<br/>(pose + camera frames + task)
 
