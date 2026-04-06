@@ -1,0 +1,17 @@
+# This project was developed with assistance from AI tools.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: mission-planner
+  annotations:
+    haproxy.router.openshift.io/timeout: 60s
+spec:
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  to:
+    kind: Service
+    name: mission-planner
+    weight: 100
+  port:
+    targetPort: http

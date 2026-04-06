@@ -1,0 +1,14 @@
+# This project was developed with assistance from AI tools.
+apiVersion: v1
+kind: Service
+metadata:
+  name: mission-planner
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: mission-planner
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http

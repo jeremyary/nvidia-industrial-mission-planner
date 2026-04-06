@@ -1,0 +1,12 @@
+# This project was developed with assistance from AI tools.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mission-planner-config
+data:
+  COSMOS_ENDPOINT: "http://cosmos-reason2:8000/v1"
+  COSMOS_MODEL: "nvidia/Cosmos-Reason2-8B"
+  NEMOTRON_ENDPOINT: "http://nemotron-nano:8000/v1"
+  NEMOTRON_MODEL: "nvidia/NVIDIA-Nemotron-3-Nano-4B-BF16"
+  LOG_LEVEL: "info"
+  REQUEST_TIMEOUT: "30"

@@ -1,0 +1,17 @@
+# This project was developed with assistance from AI tools.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml
+  - route.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/name: mission-planner
+      app.kubernetes.io/component: api
+      app.kubernetes.io/part-of: mission-planner
+      app.kubernetes.io/managed-by: kustomize
+    includeSelectors: true
