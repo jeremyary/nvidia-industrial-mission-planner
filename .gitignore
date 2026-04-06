@@ -1,0 +1,23 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+LAST_CHANGES.md
+.changes/
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+
+# IDE
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
