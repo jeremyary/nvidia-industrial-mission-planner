@@ -28,6 +28,8 @@ Each action in the response uses a flat structure matching the robot operator's 
 {
   "request_id": "a1b2c3d4e5f6",
   "plan_id": "c7d8e9f0",
+  "timestamp": "2026-04-08T14:30:00+00:00",
+  "ttl_seconds": 300,
   "frame_id": "world",
   "actions": [
     {
@@ -57,6 +59,8 @@ Each action in the response uses a flat structure matching the robot operator's 
 | `on_arrive` | string or null | `handshake`, `wave`, `grasp`, `release` |
 | `x`, `y`, `z` | float | Meters in world frame |
 | `yaw` | float | Radians |
+| `timestamp` | ISO 8601 datetime | Plan creation time (UTC) |
+| `ttl_seconds` | int | Plan validity window in seconds |
 | `replan_conditions` | array | Forward-looking — not yet consumed by the robot client |
 
 ## API Endpoints
@@ -100,6 +104,7 @@ Environment variables (see `.env.example`):
 | `NEMOTRON_MODEL` | `nemotron` | Served model name for planning |
 | `LOG_LEVEL` | `info` | Logging level |
 | `REQUEST_TIMEOUT` | `30.0` | Model request timeout in seconds |
+| `PLAN_TTL_SECONDS` | `300` | Plan validity window in seconds |
 
 ## Deployment
 
