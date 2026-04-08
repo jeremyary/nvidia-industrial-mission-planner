@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import uuid
+from datetime import datetime, timezone
 from typing import Literal, Optional
 
 from pydantic import BaseModel, Field
@@ -59,6 +60,14 @@ class PlanResponse(BaseModel):
         description="Correlation ID for tracing this request",
     )
     plan_id: str = Field(default_factory=lambda: uuid.uuid4().hex[:12])
+    timestamp: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
+        description="Plan creation time (ISO 8601, UTC)",
+    )
+    ttl_seconds: int = Field(
+        ...,
+        description="Seconds after timestamp before this plan should be considered stale",
+    )
     frame_id: str = Field("world", description="Coordinate frame for all poses")
     actions: list[Action]
     scene_description: Optional[str] = Field(

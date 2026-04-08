@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     nemotron_model: str = "nemotron"
     log_level: str = "info"
     request_timeout: float = 30.0
+    plan_ttl_seconds: int = 300
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8", "extra": "ignore"}
 

@@ -170,6 +170,7 @@ async def plan_mission(
 
     return PlanResponse(
         frame_id=frame_id,
+        ttl_seconds=settings.plan_ttl_seconds,
         actions=actions,
         scene_description=scene_description,
         replan_conditions=replan_conditions,

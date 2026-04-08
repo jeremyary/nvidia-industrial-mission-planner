@@ -33,6 +33,9 @@ async def test_plan_with_camera(client, plan_request_with_camera):
     assert resp.status_code == 200
     data = resp.json()
     assert "plan_id" in data
+    assert "timestamp" in data
+    assert "ttl_seconds" in data
+    assert data["ttl_seconds"] == 300
     assert len(data["actions"]) == 4
     assert data["actions"][0]["behavior"] == "walk"
     assert data["actions"][2]["behavior"] == "climb"

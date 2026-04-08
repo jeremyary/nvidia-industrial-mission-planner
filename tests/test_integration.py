@@ -122,6 +122,9 @@ async def test_full_plan_with_vision_flow(client):
 
     # Verify plan structure matches the robot operator's waypoint format
     assert "plan_id" in data
+    assert "timestamp" in data
+    assert "ttl_seconds" in data
+    assert data["ttl_seconds"] == 300
     assert "frame_id" in data
     assert data["frame_id"] == "world"
     assert len(data["actions"]) > 0
